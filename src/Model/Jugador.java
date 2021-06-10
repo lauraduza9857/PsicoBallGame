@@ -14,8 +14,10 @@ public class Jugador extends Thread {
 	private boolean moverI = false;
 	private boolean moverD = false;
 	private boolean isAlive = true;
+	private boolean isHavingKey = false;
 	private boolean isTouchingFloor = false;
 	PImage bNImage;
+	
 
 	public Jugador(PApplet app, int x, int y, PImage bNImage) {
 		// TODO Auto-generated constructor stub
@@ -54,10 +56,13 @@ public class Jugador extends Thread {
 
 	public void validarSuelo() {
 		if (bNImage.get((int) x, (int) y + 40) == -16777216) {
+			gravedad = -1;
 			isTouchingFloor = true;
 		} else {
-			System.out.println(bNImage.get((int) x, (int) y + 80));
 			isTouchingFloor = false;
+		}
+		if (bNImage.get((int) x, (int) y + 40) == -5303017 || y > app.height + 150) {
+			isAlive = false;
 		}
 	}
 
@@ -98,5 +103,39 @@ public class Jugador extends Thread {
 			}
 		}
 	}
+
+	public float getX() {
+		return x;
+	}
+
+	public void setX(float x) {
+		this.x = x;
+	}
+
+	public float getY() {
+		return y;
+	}
+
+	public void setY(float y) {
+		this.y = y;
+	}
+
+	public boolean getIsAlive() {
+		return isAlive;
+	}
+
+	public void setAlive(boolean isAlive) {
+		this.isAlive = isAlive;
+	}
+
+	public boolean isHavingKey() {
+		return isHavingKey;
+	}
+
+	public void setHavingKey(boolean isHavingKey) {
+		this.isHavingKey = isHavingKey;
+	}
+	
+	
 
 }
