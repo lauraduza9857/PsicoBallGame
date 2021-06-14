@@ -10,22 +10,32 @@ public class Logica extends Thread {
 
 	private PApplet app;
 	private int pantalla;
+	private int Cp2 = 0;
 	private int Cp3 = 0;
+	private int Cp4 = 0;
 	private PImage registro;
 	private PImage menu;
 	private PImage nivel1;
 	private PImage nivel1BN;
+	private PImage nivel2;
+	private PImage nivel2BN;
 	private PImage nivel3;
 	private PImage nivel3BN;
+	private PImage nivel4;
+	private PImage nivel4BN;
 	private PImage resumen;
 	private String username = "";
 	private User dataUser;
 	private boolean editUserName = false;
 	private Jugador jugador;
+	private Jugador jugador2;
 	private Jugador jugador3;
+	private Jugador jugador4;
 	private ArrayList<Enemigo> enemigos;
 	private Llave llave;
+	private Llave llave2;
 	private Llave llave3;
+	private Llave llave4;
 	private int segundos = 0;
 	private int minutos = 0;
 	private int nivel;
@@ -38,8 +48,12 @@ public class Logica extends Thread {
 		menu = app.loadImage("MENU.png");
 		nivel1 = app.loadImage("Nivel1.png");
 		nivel1BN = app.loadImage("nivel1-blanconegro.png");
+		nivel2 = app.loadImage("Nivel2.png");
+		nivel2BN = app.loadImage("nivel2-blanconegro.png");
 		nivel3 = app.loadImage("Nivel3.png");
 		nivel3BN = app.loadImage("nivel3-blanconegro.png");
+		nivel4 = app.loadImage("Nivel4.png");
+		nivel4BN = app.loadImage("nivel4-blanconegro.png");
 		resumen = app.loadImage("Resume.png");
 		pantalla = 0;
 		enemigos = new ArrayList<Enemigo>();
@@ -64,7 +78,7 @@ public class Logica extends Thread {
 			if (jugador != null) {
 				jugador.pintar();
 			}
-
+			
 			if (llave != null) {
 				llave.pintar();
 			}
@@ -77,19 +91,46 @@ public class Logica extends Thread {
 			app.text(nivel, 880, 62);
 			app.text(dataUser.getPuntaje(), 1042, 62);
 			app.text(minutos + " : " + segundos, 1212, 62);
-		case 3:
-
-			// Aquí va el nivel 2
-
+			
 			break;
-		case 4:
-			// Aquí va el nivel 3
-			if (jugador3 == null && pantalla == 4) {
+		case 3:
+			if (pantalla == 3) {
+				app.image(nivel2, app.width / 2, app.height / 2);
+			}
+			
+			if (Cp2 == 0 && pantalla == 3) {
 				app.text("click para empezar", app.width / 2, app.height / 2);
 			}
-			if (pantalla == 3) {
+			
+			if (jugador2 != null) {
+				jugador2.pintar();
+			}
+
+			if (llave2 != null) {
+				llave2.pintar();
+			}
+			if (enemigos != null) {
+				for (int i = 0; i < enemigos.size(); i++) {
+					enemigos.get(i).pintar();
+				}
+			}
+			
+			app.fill(255);
+			app.text(nivel, 880, 62);
+			app.text(dataUser.getPuntaje(), 1042, 62);
+			app.text(minutos + " : " + segundos, 1212, 62);
+			break;
+			
+		case 4:
+			// Aquí va el nivel 3
+			if (pantalla == 4) {
 				app.image(nivel3, app.width / 2, app.height / 2);
 			}
+			
+			if (Cp3 == 0 && pantalla == 4) {
+				app.text("click para empezar", app.width / 2, app.height / 2);
+			}
+			
 			if (jugador3 != null) {
 				jugador3.pintar();
 			}
@@ -107,8 +148,34 @@ public class Logica extends Thread {
 			app.text(dataUser.getPuntaje(), 1042, 62);
 			app.text(minutos + " : " + segundos, 1212, 62);
 			break;
+			
 		case 5:
 			// Aquí va el nivel 4
+			if (pantalla == 5) {
+				app.image(nivel4, app.width / 2, app.height / 2);
+			}
+			
+			if (Cp4 == 0 && pantalla == 5) {
+				app.text("click para empezar", app.width / 2, app.height / 2);
+			}
+			
+			if (jugador4 != null) {
+				jugador4.pintar();
+			}
+
+			if (llave4 != null) {
+				llave4.pintar();
+			}
+			if (enemigos != null) {
+				for (int i = 0; i < enemigos.size(); i++) {
+					enemigos.get(i).pintar();
+				}
+			}
+			
+			app.fill(255);
+			app.text(nivel, 880, 62);
+			app.text(dataUser.getPuntaje(), 1042, 62);
+			app.text(minutos + " : " + segundos, 1212, 62);
 			break;
 
 		case 6:
@@ -124,81 +191,208 @@ public class Logica extends Thread {
 	}
 
 	public void validarColission() {
-		if (jugador != null) {
-			for (int i = 0; i < enemigos.size(); i++) {
-				Enemigo n = enemigos.get(i);
-				if (app.dist(jugador.getX(), jugador.getY(), n.getX(), n.getY()) < 40) {
-					jugador.setAlive(false);
-					System.out.println("hey");
+		switch(pantalla) {
+			case 2:
+			if (jugador != null) {
+				for (int i = 0; i < enemigos.size(); i++) {
+					Enemigo n = enemigos.get(i);
+					if (app.dist(jugador.getX(), jugador.getY(), n.getX(), n.getY()) < 40) {
+						jugador.setAlive(false);
+						System.out.println("DEAD");
+					}
 				}
 			}
-			if (llave != null) {
-				if (app.dist(jugador.getX(), jugador.getY(), llave.getX(), llave.getY()) < 40) {
-					int puntaje = dataUser.getPuntaje();
-					dataUser.setPuntaje(puntaje += 20);
-					jugador.setHavingKey(true);
-					llave = null;
+			break;
+		
+			case 3:
+				if (jugador2 != null) {
+					for (int i = 0; i < enemigos.size(); i++) {
+						Enemigo n = enemigos.get(i);
+						if (app.dist(jugador2.getX(), jugador2.getY(), n.getX(), n.getY()) < 40) {
+							jugador2.setAlive(false);
+							System.out.println("DEAD");
+						}
+					}
 				}
-
-			}
-
-			if (llave3 != null) {
-				if (app.dist(jugador3.getX(), jugador3.getY(), llave3.getX(), llave3.getY()) < 40) {
-					int puntaje = dataUser.getPuntaje();
-					dataUser.setPuntaje(puntaje += 20);
-					jugador3.setHavingKey(true);
-					llave3 = null;
+			break;
+			
+			case 4:
+				if (jugador3 != null) {
+					for (int i = 0; i < enemigos.size(); i++) {
+						Enemigo n = enemigos.get(i);
+						if (app.dist(jugador3.getX(), jugador3.getY(), n.getX(), n.getY()) < 40) {
+							jugador3.setAlive(false);
+							System.out.println("DEAD");
+						}
+					}
 				}
+			break;
+			
+			case 5:
+				if (jugador4 != null) {
+					for (int i = 0; i < enemigos.size(); i++) {
+						Enemigo n = enemigos.get(i);
+						if (app.dist(jugador4.getX(), jugador4.getY(), n.getX(), n.getY()) < 40) {
+							jugador4.setAlive(false);
+							System.out.println("DEAD");
+						}
+					}
+				}
+			break;
+		}
+			
+			switch(pantalla) {
+			case 2:
+				if (llave != null) {
+					if (app.dist(jugador.getX(), jugador.getY(), llave.getX(), llave.getY()) < 40) {
+						int puntaje = dataUser.getPuntaje();
+						dataUser.setPuntaje(puntaje += 20);
+						jugador.setHavingKey(true);
+						llave = null;
+					}
+	
+				}
+				break;
+				
+			case 3:
+				if (llave2 != null) {
+					if (app.dist(jugador2.getX(), jugador2.getY(), llave2.getX(), llave2.getY()) < 40) {
+						int puntaje = dataUser.getPuntaje();
+						dataUser.setPuntaje(puntaje += 20);
+						jugador2.setHavingKey(true);
+						llave2 = null;
+					}
+				}
+				break;
+				
+			case 4:
+				if (llave3 != null) {
+					if (app.dist(jugador3.getX(), jugador3.getY(), llave3.getX(), llave3.getY()) < 40) {
+						int puntaje = dataUser.getPuntaje();
+						dataUser.setPuntaje(puntaje += 20);
+						jugador3.setHavingKey(true);
+						llave3 = null;
+					}
+				}
+				break;
+				
+			case 5:
+				if (llave4 != null) {
+					if (app.dist(jugador4.getX(), jugador4.getY(), llave4.getX(), llave4.getY()) < 40) {
+						int puntaje = dataUser.getPuntaje();
+						dataUser.setPuntaje(puntaje += 20);
+						jugador4.setHavingKey(true);
+						llave4 = null;
+					}
+				}
+				break;
 			}
+			
 			// metodo para ganar solo duplicar y colocar cordenadas de la puerta
 			switch (pantalla) {
 			case 2:
 				if (jugador.getX() > 1140 && jugador.getX() < 1270 && jugador.getY() > 345 && jugador.getY() < 565
 						&& jugador.isHavingKey()) {
 
-					for (int i = 0; i < enemigos.size(); i++) {
-						enemigos.remove(i);
-					}
+					enemigos.clear();
+					
 					// jugador = null;
+					jugador2 = new Jugador(app, 100, 600, nivel2BN);
+					llave2 = new Llave(app, 500, 50);
 					pantalla = 3;
 				}
 
 				break;
+			
+			case 3:
+				if (jugador2.getX() > 1140 && jugador2.getX() < 1270 && jugador2.getY() > 300
+						&& jugador2.getY() < 520 && jugador2.isHavingKey()) {
+
+					enemigos.clear();
+					
+					jugador3 = new Jugador(app, 170, 130, nivel3BN);
+					llave3 = new Llave(app, 60, 625);
+					pantalla = 4;
+				}
+				
+				break;
+			
 			case 4:
 				try {
 					if (jugador3.getX() > 1140 && jugador3.getX() < 1270 && jugador3.getY() > 510
 							&& jugador3.getY() < 670 && jugador3.isHavingKey()) {
 
-						for (int i = 0; i < enemigos.size(); i++) {
-							enemigos.remove(i);
-						}
-						pantalla = 4;
+						enemigos.clear();
+						
+						jugador4 = new Jugador(app, 80, 470, nivel4BN);
+						llave4 = new Llave(app, 620, 465);
+						pantalla = 5;
 					}
 				} catch (Exception e) {
-
+					e.printStackTrace();
 				}
 
+			break;
+			
+			case 5:
+				if (jugador4.getX() > 1140 && jugador4.getX() < 1270 && jugador4.getY() > 294
+						&& jugador4.getY() < 520 && jugador4.isHavingKey()) {
+
+					for (int i = 0; i < enemigos.size(); i++) {
+						enemigos.remove(i);
+					}
+					
+					jugador4.setAlive(false);
+				}
+				
 				break;
+			
 			default:
 				break;
 			}
 		}
-	}
 
 	public void playerIsAlive() {
-		if (jugador != null) {
-			if (!jugador.getIsAlive()) {
-				pantalla = 6;
-				jugador = null;
-				enemigos = null;
+		switch(pantalla) {
+		case 2:
+			if (jugador != null) {
+				if (!jugador.getIsAlive()) {
+					pantalla = 6;
+					jugador = null;
+					enemigos = null;
+				}
 			}
-		}
-		if (jugador3 != null) {
-			if (!jugador3.getIsAlive()) {
-				pantalla = 6;
-				jugador3 = null;
-				enemigos = null;
+			break;
+			
+		case 3:
+			if (jugador2 != null) {
+				if (!jugador2.getIsAlive()) {
+					pantalla = 6;
+					jugador2 = null;
+					enemigos = null;
+				}
 			}
+		break;	
+		
+		case 4:
+			if (jugador3 != null) {
+				if (!jugador3.getIsAlive()) {
+					pantalla = 6;
+					jugador3 = null;
+					enemigos = null;
+				}
+			}
+		break;
+			
+		case 5:
+			if (jugador4 != null) {
+				if (!jugador4.getIsAlive()) {
+					pantalla = 6;
+					jugador4 = null;
+					enemigos = null;
+				}
+			}
+		break;
 		}
 	}
 
@@ -253,13 +447,22 @@ public class Logica extends Thread {
 				llave = new Llave(app, 650, 230);
 			}
 			break;
+		case 3:
+			Cp2 += 1;
+			if (Cp2 == 1) {
+				jugador2.start();
+
+				Enemigo re = new Pez(app, 730, 560, nivel2BN);
+				Thread ntT = new Thread(re);
+				ntT.start();
+				enemigos.add(re);
+			}
+			break;
 		case 4:
 			Cp3 += 1;
 			if (Cp3 == 1) {
-				jugador3 = new Jugador(app, 170, 130, nivel3BN);
 				jugador3.start();
-				llave3 = new Llave(app, 60, 625);
-
+				
 				Enemigo re = new Pez2(app, 285, 565, nivel3BN);
 				Enemigo re2 = new Pez2(app, 125, 365, nivel3BN);
 				Enemigo re3 = new Pez2(app, 585, 405, nivel3BN);
@@ -274,6 +477,19 @@ public class Logica extends Thread {
 				enemigos.add(re3);
 			}
 			break;
+			
+		case 5:
+			Cp4 += 1;
+			if (Cp4 == 1) {
+				jugador4.start();
+				
+				Enemigo re = new Pez(app, 749, 445, nivel4BN);
+				Thread ntT = new Thread(re);
+				ntT.start();
+				enemigos.add(re);
+			}
+			break;
+			
 		default:
 			break;
 		}
@@ -298,10 +514,15 @@ public class Logica extends Thread {
 		case 2:
 			jugador.KeyPressed();
 			break;
+		case 3:
+			jugador2.KeyPressed();
+			break;
 		case 4:
 			jugador3.KeyPressed();
 			break;
-
+		case 5:
+			jugador4.KeyPressed();
+			break;
 		default:
 			break;
 		}
@@ -312,12 +533,21 @@ public class Logica extends Thread {
 		case 2:
 			jugador.KeyReleased();
 			break;
-
+			
+		case 3:
+			jugador2.KeyReleased();
+			break;
+			
 		case 4:
 
 			jugador3.KeyReleased();
 
 			break;
+		
+		case 5:
+			jugador4.KeyReleased();
+			break;
+			
 		default:
 			break;
 		}
