@@ -32,5 +32,7 @@ public class Controller {
 	public void keyReleased() {
 		logica.keyReleased();
 	}
+	
+
 
 }
