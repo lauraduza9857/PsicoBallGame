@@ -3,6 +3,9 @@ package Model;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import Exceptions.AlreadyStartedException;
+import Exceptions.NullPlayerException;
+import Exceptions.SurvivingEnemyException;
 import processing.core.PApplet;
 import processing.core.PImage;
 
@@ -75,8 +78,15 @@ public class Logica extends Thread {
 		case 2:
 
 			app.image(nivel1, app.width / 2, app.height / 2);
-			if (jugador != null) {
-				jugador.pintar();
+			
+			try {
+				if (jugador != null) {
+					jugador.pintar();
+				}else {
+					throw new NullPlayerException("This player does not exist.");
+				}
+			}catch(NullPlayerException npe){
+				npe.printStackTrace();
 			}
 			
 			if (llave != null) {
@@ -324,6 +334,14 @@ public class Logica extends Thread {
 
 						enemigos.clear();
 						
+						try {
+							if(enemigos.size() != 0) {
+								throw new SurvivingEnemyException("The enemies weren't deleted properly.");
+							}
+						}catch(SurvivingEnemyException see) {
+							see.printStackTrace();
+						}
+						
 						jugador4 = new Jugador(app, 80, 470, nivel4BN);
 						llave4 = new Llave(app, 620, 465);
 						pantalla = 5;
@@ -447,17 +465,25 @@ public class Logica extends Thread {
 				llave = new Llave(app, 650, 230);
 			}
 			break;
+			
 		case 3:
 			Cp2 += 1;
-			if (Cp2 == 1) {
-				jugador2.start();
-
-				Enemigo re = new Pez(app, 730, 560, nivel2BN);
-				Thread ntT = new Thread(re);
-				ntT.start();
-				enemigos.add(re);
+			try {
+				if (Cp2 == 1) {
+					jugador2.start();
+	
+					Enemigo re = new Pez(app, 730, 560, nivel2BN);
+					Thread ntT = new Thread(re);
+					ntT.start();
+					enemigos.add(re);
+				}else {
+					throw new AlreadyStartedException("The current level has already been started.");
+				}
+			}catch(AlreadyStartedException ase) {
+				ase.printStackTrace();
 			}
 			break;
+			
 		case 4:
 			Cp3 += 1;
 			if (Cp3 == 1) {
