@@ -520,13 +520,13 @@ public class Logica extends Thread {
 				enemigos.add(re);
 			}
 			break;
-	/*	case 6:
+		case 6:
 			
 			if (app.mouseX > 590 && app.mouseX < 690 && app.mouseY > 530 && app.mouseY < 610) {
 				pantalla=1;
 			}
 			break;
-			*/
+			
 			
 		default:
 			break;
