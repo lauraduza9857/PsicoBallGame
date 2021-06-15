@@ -27,6 +27,7 @@ public class Logica extends Thread {
 	private PImage nivel4;
 	private PImage nivel4BN;
 	private PImage resumen;
+	private PImage bola;
 	private String username = "";
 	private User dataUser;
 	private boolean editUserName = false;
@@ -58,6 +59,7 @@ public class Logica extends Thread {
 		nivel4 = app.loadImage("Nivel4.png");
 		nivel4BN = app.loadImage("nivel4-blanconegro.png");
 		resumen = app.loadImage("Resume.png");
+		bola = app.loadImage("Bolita.png");
 		pantalla = 0;
 		enemigos = new ArrayList<Enemigo>();
 
@@ -194,6 +196,7 @@ public class Logica extends Thread {
 			app.text(dataUser.getPuntaje(), 438, 341);
 			app.text(minutos + " : " + segundos, 624, 341);
 			app.text(dataUser.getDate(), 821, 341);
+			app.image(bola, app.width / 2, 570);
 			break;
 		default:
 			break;
@@ -449,6 +452,7 @@ public class Logica extends Thread {
 					String date = LocalDate.now() + "";
 					dataUser = new User(username, date);
 					pantalla += 1;
+
 				}
 			}
 			break;
@@ -463,6 +467,7 @@ public class Logica extends Thread {
 				nT.start();
 				enemigos.add(e);
 				llave = new Llave(app, 650, 230);
+
 			}
 			break;
 			
@@ -515,6 +520,13 @@ public class Logica extends Thread {
 				enemigos.add(re);
 			}
 			break;
+	/*	case 6:
+			
+			if (app.mouseX > 590 && app.mouseX < 690 && app.mouseY > 530 && app.mouseY < 610) {
+				pantalla=1;
+			}
+			break;
+			*/
 			
 		default:
 			break;
